@@ -1,0 +1,427 @@
+<title>Commercial Outreach Playbook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky header with breadcrumb trail; a fill-in strip for the current call; one step of the call flow (or one template) at a time, with branch buttons to the next step. */
+:root{
+  --bg:#f3f6f6; --surface:#ffffff; --sunk:#e9eff0; --ink:#13262f; --muted:#587078; --line:#d6e0e2;
+  --accent:#0b7c84; --accent-ink:#ffffff; --accent-soft:#dff0ef; --info:#2f5fa8; --info-soft:#e1eaf8; --warn:#9a6200; --warn-soft:#fbefd5;
+  --f-display:"Bricolage Grotesque","Figtree",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1a1e; --surface:#162429; --sunk:#1c2d33; --ink:#e3ecee; --muted:#93a9b0; --line:#2a3f46;
+  --accent:#3fb6b9; --accent-ink:#06191c; --accent-soft:#163b3e; --info:#85aef0; --info-soft:#1b2c48; --warn:#e9b04f; --warn-soft:#3a2d12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1a1e; --surface:#162429; --sunk:#1c2d33; --ink:#e3ecee; --muted:#93a9b0; --line:#2a3f46;
+  --accent:#3fb6b9; --accent-ink:#06191c; --accent-soft:#163b3e; --info:#85aef0; --info-soft:#1b2c48; --warn:#e9b04f; --warn-soft:#3a2d12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:980px;margin:0 auto}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+a{color:var(--accent)}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:12px}
+.title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.title h1{font-size:20px}
+.title span{color:var(--muted);font-size:13px}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:2px 4px;margin-top:6px;font-size:13.5px;list-style:none;padding:0}
+.crumbs li{display:flex;align-items:center;gap:4px}
+.crumbs li+li::before{content:"›";color:var(--muted);margin:0 2px}
+.crumbs a{text-decoration:none;font-weight:600;padding:2px 4px;border-radius:5px}
+.crumbs a:hover{background:var(--accent-soft)}
+.crumbs [aria-current]{font-weight:700;color:var(--ink);padding:2px 4px}
+
+.fill{background:var(--sunk);border-bottom:1px solid var(--line)}
+.fill .wrap{padding-block:10px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:flex-end}
+.fill label{display:flex;flex-direction:column;gap:2px;font-size:11.5px;font-weight:700;color:var(--muted);flex:1 1 140px;min-width:0;text-transform:uppercase;letter-spacing:.04em}
+.fill input{border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 8px;font-size:14px;font-weight:400;text-transform:none;letter-spacing:0;width:100%}
+.fill .who{flex:0 0 auto}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px}
+.seg button{border:0;background:transparent;padding:4px 12px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.fill .note{flex:1 1 100%;font-size:12px;color:var(--muted);margin:0}
+.fill .clear{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font-size:12px}
+
+main{padding-block:22px 70px}
+.stephead{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.badge{flex:none;font-family:var(--f-mono);font-weight:500;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:4px 9px;font-size:13px;margin-top:3px}
+.stephead h2{font-size:26px;line-height:1.15}
+.stephead p{margin:4px 0 0;color:var(--muted);max-width:62ch}
+.say{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;max-width:72ch}
+.say::before{content:"Say";display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.ask{border-left:3px solid var(--info);background:var(--info-soft);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;max-width:72ch}
+.ask::before{content:"Ask & write down";display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--info);margin-bottom:3px}
+.ask ul{margin:0;padding-left:18px}
+.tip{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0;max-width:72ch;font-size:14px}
+.tip::before{content:"Tip";display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--warn);margin-bottom:2px}
+.do{color:var(--muted);font-size:14px;max-width:72ch;margin:10px 0}
+.do b{color:var(--ink)}
+h3.sub{font-size:16px;margin:22px 0 4px}
+.ph{background:var(--sunk);border:1px dashed var(--line);border-radius:5px;padding:0 4px;font-family:var(--f-mono);font-size:.86em;white-space:nowrap}
+.fv{background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:4px;padding:0 3px;font-weight:600}
+
+.next{margin-top:26px;border-top:1px solid var(--line);padding-top:16px}
+.next h3{font-size:12px;font-family:var(--f-body);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.choice{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.choice:hover{border-color:var(--accent)}
+.choice b{font-weight:700}
+.choice span{color:var(--muted);font-size:13px}
+.choice b::after{content:" →";color:var(--accent)}
+
+.home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.card h3{font-size:17px;margin-bottom:6px}
+.card ol,.card ul{margin:0;padding-left:20px}
+.card li{margin:3px 0}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:16px 0 4px;font-size:13.5px}
+.flow a{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 11px;text-decoration:none;font-weight:600}
+.flow a:hover{border-color:var(--accent)}
+.flow i{color:var(--muted);font-style:normal}
+
+table.obj{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.obj td{border-bottom:1px solid var(--line);padding:11px 12px;vertical-align:top}
+.obj td:first-child{font-weight:700;width:32%}
+.obj .then{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+.tbl{overflow-x:auto}
+.cad{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.cad{grid-template-columns:minmax(0,1fr)}}
+.cad div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.cad b{display:block;font-family:var(--f-mono);font-size:12.5px;color:var(--accent);margin-bottom:2px}
+
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.svc .card{padding:12px 14px}
+.svc h3{font-size:15.5px;margin-bottom:2px}
+.steps{margin:6px 0 12px;padding-left:22px;max-width:72ch}.steps li{margin:4px 0}
+.facts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0}
+@media (max-width:700px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.facts div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.facts b{display:block;font-family:var(--f-display);font-size:18px;color:var(--accent);line-height:1.2}
+.facts span{font-size:12.5px;color:var(--muted)}
+.cmp{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);min-width:560px}
+.cmp th,.cmp td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.cmp th{background:var(--sunk);font-size:13px}
+.cmp td:first-child{font-weight:700;width:18%}
+.cmp td:nth-child(2){background:var(--accent-soft)}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.jump a{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 11px;text-decoration:none;font-weight:600;font-size:13.5px}
+.jump a:hover{border-color:var(--accent)}
+h3.sub{scroll-margin-top:200px}
+.tpl-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.tpl-meta{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
+.pill{font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--sunk);color:var(--muted)}
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;white-space:pre-wrap;max-width:72ch}
+.msg .subj{display:block;font-weight:700;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 13px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+.pager a{text-decoration:none;font-weight:600;font-size:14px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-weight:600;z-index:60}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="title"><h1>Commercial Outreach Playbook</h1><span>Oxi Fresh Carpet Cleaning of Northeast Florida · call scripts &amp; templates for Joy and Mary</span></div>
+    <nav aria-label="Breadcrumb"><ol class="crumbs" id="crumbs"></ol></nav>
+  </div>
+</header>
+<div class="fill">
+  <div class="wrap">
+    <div class="who"><label>I'm calling as<span class="seg" id="youSeg" role="group" aria-label="Your name"><button type="button" data-you="Joy" aria-pressed="false">Joy</button><button type="button" data-you="Mary" aria-pressed="false">Mary</button></span></label></div>
+    <label>Company<input id="f-company" placeholder="Courtyard Marriott"></label>
+    <label>Contact on file<input id="f-contact" placeholder="Falicia Fink"></label>
+    <label>New GM<input id="f-gm" placeholder="if the contact left"></label>
+    <label>Last cleaned<input id="f-last" placeholder="November 2024"></label>
+    <label>Sean's visit<input id="f-meet" placeholder="Tue, Nov 12 at 10 am"></label>
+    <p class="note">Optional: type the details for the call you're on and every script and template below fills in. <button type="button" class="clear" id="clearBtn">Clear for next call</button></p>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const PHONE="904-368-5776";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const F={you:"",company:"",contact:"",gm:"",last:"",meet:""};
+const LABEL={you:"Your Name",company:"Company",contact:"Contact Name",gm:"GM Name",last:"Month Year",meet:"Appointment Date & Time"};
+try{const s=JSON.parse(localStorage.getItem("cop-fill")||"{}");Object.keys(F).forEach(k=>{if(typeof s[k]==="string")F[k]=s[k]})}catch(e){}
+const firstName=n=>(n||"").trim().split(/\s+/)[0]||"";
+function val(k){if(k==="who")return firstName(F.gm)||firstName(F.contact);if(k==="cfirst")return firstName(F.contact);if(k==="gfirst")return firstName(F.gm);if(k==="phone")return PHONE;return F[k]}
+function lab(k){return k==="who"?"Name":k==="cfirst"?"Contact Name":k==="gfirst"?"GM Name":LABEL[k]}
+// {key} in text → filled value or placeholder chip
+function fillHTML(t){return esc(t).replace(/\{(\w+)\}/g,(m,k)=>{const v=val(k);return v?`<span class="fv">${esc(v)}</span>`:`<span class="ph">[${esc(lab(k))}]</span>`})}
+function fillText(t){return t.replace(/\{(\w+)\}/g,(m,k)=>val(k)||`[${lab(k)}]`)}
+
+/* ---------- content ---------- */
+const S=(t)=>`<div class="say">${fillHTML(t)}</div>`;
+const A=(items)=>`<div class="ask"><ul>${items.map(i=>`<li>${fillHTML(i)}</li>`).join("")}</ul></div>`;
+const TIP=(t)=>`<div class="tip">${t}</div>`;
+const DO=(t)=>`<p class="do">${t}</p>`;
+const go=(id,title,why)=>`<a class="choice" href="#${id}"><b>${esc(title)}</b><span>${esc(why)}</span></a>`;
+
+const STEPS={
+ prep:{badge:"0",title:"Before you call",crumb:["flow"],lead:"Two minutes of prep makes the call feel natural and personal.",
+  body:()=>`<div class="card"><ul>
+    <li>Look up the customer in the tracker or Launch Pad: <b>when we last cleaned</b>, <b>who we worked with</b>, and <b>what we cleaned</b>.</li>
+    <li>Type those details in the bar above so the script uses the real names.</li>
+    <li>Check nobody else is already working the account, so you and Mary don't call the same customer.</li>
+    <li>Best times to reach businesses: <b>Tuesday–Thursday, 9:30–11:30 am or 2–4 pm</b> Florida time. Avoid Monday mornings and lunch.</li>
+    <li>Have a pen ready for the new GM's name, phone and email.</li></ul></div>
+    ${TIP("Smile when you dial. People can hear it, and a warm voice gets you past the front desk.")}`,
+  next:[["opening","Start the call","Go to the opening"]]},
+ opening:{badge:"1",title:"Opening",crumb:["flow"],lead:"Ask for the person we worked with before.",
+  body:()=>`${S("Hi, good morning! This is {you} calling from Oxi Fresh Carpet Cleaning of Northeast Florida. May I please speak with {contact}?")}
+    ${DO('If they ask what it\'s about:')}
+    ${S("We've cleaned the carpets for {company} before, and I'm just checking in with {cfirst}.")}`,
+  next:[["contact-there","They put me through","The contact still works there"],["contact-left","The contact has left","They no longer work there"],["voicemail","No answer / voicemail","Nobody picked up"],["objections","They push back","Common answers and what to say"]]},
+ "contact-there":{badge:"2A",title:"The contact is still there",crumb:["flow","opening"],lead:"Reconnect warmly, then offer a simple next step.",
+  body:()=>`${S("Hi {cfirst}, this is {you} with Oxi Fresh Carpet Cleaning. We took care of your carpets back in {last}, and I'm just calling to check in. How have things held up since then?")}
+    ${S("We're reaching out to our commercial customers this season to help get their spaces fresh before the holidays. Aside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors.")}
+    ${S("Would it help if we put together an estimate? Our franchise owner, Sean Rotolo, can meet you at the property to see your space and give you an exact quote. I'd be happy to check his availability for you.")}
+    ${A(["Which areas need cleaning: carpet, area rugs, upholstery, tile & grout, laminate, LVP?","Roughly how big, or how many rooms or offices?","Best days and times. Can we come before opening, after hours or on a weekend?","Best email to send the quote to"])}
+    ${S("A lot of our commercial clients like a regular schedule, quarterly or twice a year, so it's one less thing to remember. Would that be helpful for you too?")}
+    ${DO('If they want an estimate or to meet, go to <a href="#estimate">Book an estimate with Sean</a>. Otherwise send the <a href="#tpl-checkin">check-in email</a>.')}`,
+  next:[["estimate","They want an estimate or a meeting","Book a visit with Sean"],["why","They ask how we clean","Our method, vs. steam, our solutions"],["wrap-up","Wrap up the call","Confirm the next step and log it"],["objections","They push back","Common answers and what to say"]]},
+ "contact-left":{badge:"2B",title:"The contact no longer works there",crumb:["flow","opening"],lead:"The most important part of this project. Stay friendly and find out who decides on vendors now.",
+  body:()=>`${S("Oh, thank you for letting me know! I hope they're doing well. Could you help me with who handles vendors or facility needs now? Would that be your general manager?")}
+    ${A(["The GM's or decision-maker's full name","Their title","Their direct phone number or extension","Their email address"])}
+    ${S("Thank you so much! Is {gm} available by chance for a quick minute?")}
+    <h3 class="sub">If the GM is available</h3>${DO('Go to <a href="#gm">3 · Talking with the GM</a>.')}
+    <h3 class="sub">If the GM is not available</h3>
+    ${S("No problem at all. Our team has cleaned for {company} in the past, and we'd love to set up a short meeting with {gfirst} to see if you need a carpet cleaning vendor. Would it be okay if I email them to find a good time? And could you let them know {you} from Oxi Fresh called?")}
+    ${DO('Send the <a href="#tpl-gm">intro email to the new GM</a> the same day.')}
+    <h3 class="sub">If they won't share the GM's details</h3>
+    ${S("I completely understand. Is there a general email for vendor inquiries? Or may I leave my name and number for them? It's {you}, Oxi Fresh Carpet Cleaning, {phone}.")}
+    ${TIP("Write the new person's details down right away and save them on the account, so the next call starts with the right person.")}`,
+  next:[["gm","The GM is on the line","Introduce us and ask for a meeting"],["voicemail","Leave the GM a voicemail","GM not available"],["wrap-up","Wrap up the call","Confirm the next step and log it"]]},
+ gm:{badge:"3",title:"Talking with the GM",crumb:["flow","opening","contact-left"],lead:"Introduce Oxi Fresh, mention our history with the location, and ask for a meeting so we can be on their vendor list.",
+  body:()=>`${S("Hi {gfirst}, this is {you} from Oxi Fresh Carpet Cleaning of Northeast Florida. Our team has cleaned for {company} before, most recently in {last}. Since you're now overseeing the location, I wanted to introduce ourselves.")}
+    ${S("Do you currently have a carpet cleaning vendor you're happy with?")}
+    ${S("Aside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors.")}
+    ${S("We'd love to be part of your vendor list. Our franchise owner, Sean Rotolo, would be happy to meet you at the property to see your space and give you a free estimate. Are mornings or afternoons usually better for you? I'll check his availability and get back to you with a couple of times.")}
+    ${DO('If they say yes, go to <a href="#estimate">Book an estimate with Sean</a> to collect everything Sean needs.')}
+    ${S("Is there a vendor setup process, like a W-9 or certificate of insurance? We're happy to send those over.")}
+    ${DO('If they asked for paperwork, send the <a href="#tpl-vendor">vendor paperwork email</a>.')}`,
+  next:[["estimate","They want to meet","Book a visit with Sean"],["wrap-up","Wrap up the call","Confirm the next step and log it"],["objections","They push back","Common answers and what to say"]]},
+ estimate:{badge:"EST",title:"Book an estimate with Sean",crumb:["flow"],lead:"When a customer wants a price or a meeting, offer a free on-site visit with our franchise owner, Sean Rotolo. Take their details, check Sean's availability, then get back to them with times.",
+  body:()=>`${S("We'd be happy to put together an estimate for you. Our franchise owner, Sean Rotolo, likes to meet our customers personally and see the property, so he can check the space and give you an exact quote. Let me check his availability, and I'll get back to you with a couple of times to meet you at your property. Would that be okay?")}
+    ${A(["Site address, including the building or suite number","Days and times that usually work best for them (mornings, afternoons, specific days)","Who will meet Sean: their name, title and cell number","What to look at: carpet, area rugs, upholstery, tile & grout, laminate, LVP","Roughly how big, or how many rooms or offices","Parking, gate codes or check-in instructions","Best phone or email to get back to them"])}
+    ${S("While Sean is there, is there anything else you'd like him to look at? Aside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors.")}
+    ${S("Thank you so much! I'll check with Sean and get back to you by [tomorrow / day] with a couple of times to meet you at {company}.")}
+    <div class="card" style="margin-top:14px"><h3>After the call</h3><ol>
+      <li>Send Sean the details: company, address, contact name and cell, what to look at, their preferred days and times, and access notes.</li>
+      <li>Once Sean gives you two or three times, get back to the customer <b>the same or next business day</b> by phone or with the <a href="#tpl-availability">Sean's availability email</a>.</li>
+      <li>When they pick a time, put it on <b>Sean's calendar</b> and send the <a href="#tpl-confirm">estimate appointment confirmation</a>.</li>
+      <li>Update the tracker: status <b>Meeting set</b>, with the appointment date. Until then, set the next follow-up to the day you promised to get back to them.</li>
+      <li>The day before the visit, send the <a href="#tpl-reminder">reminder text</a>.</li></ol></div>
+    ${TIP("Always get back to them when you said you would, even if Sean is still checking his schedule. A quick “Sean is reviewing his calendar, I'll have times for you tomorrow” keeps their trust.")}`,
+  next:[["tpl-availability","Send Sean's availability","Offer the times Sean gave you"],["tpl-confirm","Confirm the appointment","Once they pick a time"],["wrap-up","Wrap up the call","Confirm the next step and log it"]]},
+ why:{badge:"O₂",title:"Why Oxi Fresh",crumb:[],lead:"How our low-moisture cleaning works, why it matters to businesses, how it's different from steam cleaning, and what to say when someone asks about our solutions.",
+  body:()=>`<nav class="jump" aria-label="On this page"><a href="#why" data-jump="w-method">Our method</a><a href="#why" data-jump="w-business">Why it matters for businesses</a><a href="#why" data-jump="w-compare">Oxi Fresh vs. steam cleaning</a><a href="#why" data-jump="w-chem">“What do you use?”</a></nav>
+    <h3 class="sub" id="w-method">Our low-moisture method (encapsulation)</h3>
+    <ol class="steps">
+      <li><b>An oxygen-powered cleaning solution</b> is applied evenly to the carpet.</li>
+      <li><b>Our counter-rotating brush machine</b> works it into the fibers, loosening the dirt and holding it in suspension.</li>
+      <li><b>As the carpet dries, the encapsulator crystallizes around the dirt</b>, trapping it in tiny dry particles.</li>
+      <li><b>Those particles are vacuumed away.</b> The carpet keeps looking better over the next few days with regular vacuuming.</li>
+    </ol>
+    <div class="facts"><div><b>~1 hour</b><span>Typical dry time</span></div><div><b>Only ~5%</b><span>of the water traditional cleaning uses</span></div><div><b>No sticky residue</b><span>so carpets resist re-soiling</span></div><div><b>EPA Safer Choice</b><span>certified encapsulator</span></div><div><b>Helps prevent</b><span>mold and mildew, because carpets dry fast</span></div></div>
+    ${S("We use a low-moisture method called encapsulation. Instead of soaking your carpet with hot water, we use an oxygen-powered solution that lifts the dirt and traps it in tiny crystals as it dries. Then it's simply vacuumed away. We use only about 5% of the water that traditional cleaning uses, so your carpet is typically dry in about an hour, and that quick drying helps prevent mold and mildew.")}
+    <h3 class="sub" id="w-business">Why it matters for businesses</h3>
+    <div class="svc">${[["Back in business the same day","Carpets are typically dry in about an hour, so offices, units and rooms can be used again quickly. No closing for the day."],["Less disruption","No soaked carpets, long drying times or fans running all day. We can work before opening, after hours or on weekends."],["Stays cleaner, longer","No sticky residue left behind to attract new dirt, so carpets resist re-soiling between cleanings."],["Safer for the people in your space","Our solutions are formulated to be safe around children and pets when used as directed. A good fit for schools, daycares, clinics and offices."],["Helps prevent mold and mildew","Carpets that stay wet for hours can grow mold and mildew and start to smell. Ours dry fast, which helps prevent it."],["Better for the environment","Uses only about 5% of the water of traditional cleaning, with an EPA Safer Choice–certified encapsulator."],["Easy to keep up","Quick, low-disruption visits make a regular quarterly or twice-a-year schedule easy to fit in."]].map(x=>`<div class="card"><h3>${esc(x[0])}</h3><p style="margin:0" class="do">${esc(x[1])}</p></div>`).join("")}</div>
+    ${S("For a business, the biggest difference is downtime. With our process your carpets are typically dry in about an hour, so your team, tenants or guests can use the space again the same day.")}
+    <h3 class="sub" id="w-compare">Oxi Fresh vs. steam cleaning</h3>
+    <div class="tbl"><table class="cmp"><thead><tr><th></th><th>Oxi Fresh low-moisture</th><th>Traditional steam cleaning</th></tr></thead><tbody>
+      <tr><td>How it cleans</td><td>Oxygen-powered solution and encapsulator trap the dirt, which is vacuumed away</td><td>Floods the carpet with hot water, then extracts it</td></tr>
+      <tr><td>Water used</td><td>Only about 5% of the water traditional cleaning uses</td><td>A lot, plus wastewater</td></tr>
+      <tr><td>Dry time</td><td>Typically about 1 hour</td><td>Can stay damp for many hours, often 8–24</td></tr>
+      <tr><td>Mold &amp; mildew</td><td>Fast drying helps prevent mold and mildew</td><td>Carpet and pad stay wet longer, which can lead to mold, mildew and musty odors</td></tr>
+      <tr><td>Residue</td><td>No sticky residue</td><td>Leftover soap or moisture can attract dirt or wick stains back up</td></tr>
+      <tr><td>Disruption</td><td>Quick, quiet, minimal downtime</td><td>Longer closures while carpets dry</td></tr>
+    </tbody></table></div>
+    ${S("Steam cleaning soaks the carpet with hot water, so it can stay damp for hours, and that moisture can lead to mold and mildew. We use only about 5% of the water, our process traps the dirt so we can vacuum it away with no sticky residue left behind, and your carpet is typically dry in about an hour.")}
+    ${TIP("Never criticize another company by name. Explain how our method works and let the customer compare.")}
+    <h3 class="sub" id="w-chem">If they ask “What solution or chemicals do you use?”</h3>
+    ${S("Great question! We use an oxygen-powered cleaning solution together with an encapsulator. Our encapsulator is EPA Safer Choice–certified, and our solutions are formulated to be safe around children and pets when used as directed. Our formula has no perfumes, acrylics or fluorocarbons, and it doesn't leave a sticky residue behind.")}
+    ${S("If you need the product information or Safety Data Sheets for your files, I'd be happy to get those from Sean and send them over.")}
+    ${TIP("Schools, daycares, medical offices and property managers often need Safety Data Sheets (SDS) for vendor approval. Ask Sean for the current ones and send them by email. Don't guess at ingredients you're not sure about.")}`,
+  next:[["estimate","They want an estimate","Book a visit with Sean"],["services","Everything we clean","Services to mention"],["objections","Common answers","What to say when they push back"]]},
+ services:{badge:"+",title:"Everything we clean",crumb:[],lead:"Mention these on every call and in every estimate. Many commercial customers only know us for carpet.",
+  body:()=>`<div class="svc">${[["Carpet cleaning","Offices, hallways, lobbies, classrooms, rental units. Uses only about 5% of the water of traditional cleaning and is typically dry in about an hour."],["Area rugs","Entry mats, lobby rugs, office and conference room rugs."],["Upholstery","Lobby and waiting-room seating, office chairs, booths, sofas in model units."],["Tile & grout","Restrooms, kitchens, break rooms, entryways."],["Laminate floor cleaning","Offices, rental units and common areas with laminate floors."],["LVP floor cleaning","Luxury vinyl plank in apartments, offices, clinics and retail spaces."]].map(x=>`<div class="card"><h3>${esc(x[0])}</h3><p style="margin:0" class="do">${esc(x[1])}</p></div>`).join("")}</div>
+    <h3 class="sub">How to bring it up</h3>
+    ${S("Aside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors. Is there anything else in your space you'd like us to include?")}
+    ${S("While Sean is there for the estimate, he can look at your rugs, furniture and hard floors too, so everything can be done in one visit.")}
+    ${TIP("Ask what kinds of floors they have. Property managers often have LVP or laminate in their units, and offices often have tile in the restrooms and break room.")}`,
+  next:[["estimate","Book an estimate with Sean","Collect what Sean needs"],["why","Why Oxi Fresh","Our method, vs. steam, our solutions"],["opening","Back to the call flow","Opening"]]},
+ voicemail:{badge:"VM",title:"Voicemails",crumb:["flow","opening"],lead:"Keep it under 30 seconds. Say the number slowly, twice.",
+  body:()=>`<h3 class="sub">For the contact on file</h3>
+    ${S("Hi {cfirst}, this is {you} from Oxi Fresh Carpet Cleaning of Northeast Florida. We cleaned for {company} back in {last}, and I'm calling to see if you'd like a quote for your next cleaning. You can call or text us at {phone}. Again, {phone}. Thank you, and have a great day!")}
+    <h3 class="sub">For a new GM</h3>
+    ${S("Hi {gfirst}, this is {you} with Oxi Fresh Carpet Cleaning of Northeast Florida. We've cleaned for {company} in the past, and I'd love to introduce myself and see if you need a carpet cleaning vendor. I'll also send you a quick email. You can reach me at {phone}. Again, {phone}. Thank you!")}
+    ${DO('Then send the <a href="#tpl-vm">email after a voicemail</a> if you have an email address, or the <a href="#tpl-text">text message</a> if it\'s a cell phone.')}`,
+  next:[["wrap-up","Log it and set the follow-up","Try again in 2–3 days"],["rhythm","See the follow-up rhythm","When to try next"]]},
+ objections:{badge:"?",title:"Common answers & what to say",crumb:["flow"],lead:"Agree with them first, then offer one small next step.",
+  body:()=>{const r=[
+    ["“We already have a vendor.”","That's great, it's good you're covered! Many of our clients keep us as a backup for spills, move-outs or a second opinion. Could I send our info so you have it on file?","Send the check-in email. Follow up in 2 months."],
+    ["“Just send me some information.”","Absolutely! What's the best email? I'll send it today and check back with you next week. Would that be okay?","Send the email today, follow up in 5 days."],
+    ["“There's no budget right now.”","I totally understand. When do you usually plan your budget for cleaning? I'll make a note to check in then.","Set the follow-up for that month."],
+    ["“Corporate or the owner handles vendors.”","Thank you! Who would be the best person there, and do you have their email or number? I'd be happy to reach out directly.","Save the new contact and start again at the opening."],
+    ["“How much does it cost?”","Every space is different, so we'd rather give you an exact number than a guess. Our owner, Sean Rotolo, can stop by to see your property and give you a free estimate. Let me check his availability and get back to you with a couple of times. What days usually work best for you?","Go to Book an estimate with Sean."],
+    ["“Isn't steam cleaning deeper?”","Steam cleaning soaks the carpet with hot water, so it can stay damp for hours, which can lead to mold and mildew. We use only about 5% of the water. Our low-moisture process lifts the dirt and traps it so it can be vacuumed away, with no sticky residue to attract new dirt, and your carpet is typically dry in about an hour.","See Why Oxi Fresh for the full comparison."],
+    ["“Is it safe for kids, pets or patients?”","Yes! Our solutions are formulated to be safe around children and pets when used as directed, and our encapsulator is EPA Safer Choice–certified. I can also send the product information for your files.","Ask Sean for the Safety Data Sheets if they need them."],
+    ["“The carpets are fine for now.”","That's great to hear! When would be a good time for us to check back, maybe before spring or before your busy season?","Set the follow-up for that time."],
+    ["“We weren't happy last time.”","I'm really sorry to hear that, and thank you for telling me. Could you share what happened? I'll pass it straight to our owner, Sean, so we can make it right.","Write down exactly what they said and tell Joy right away."],
+    ["“Not interested.”","No problem at all, I appreciate your time! Would it be alright if we kept your info on file in case anything comes up? Have a wonderful day.","Mark as not interested. No more follow-ups."]];
+   return `<div class="tbl"><table class="obj"><tbody>${r.map(x=>`<tr><td>${esc(x[0])}</td><td>${fillHTML(x[1])}<span class="then">Then: ${esc(x[2])}</span></td></tr>`).join("")}</tbody></table></div>`},
+  next:[["estimate","They want an estimate","Book a visit with Sean"],["why","Why Oxi Fresh","Our method, vs. steam, our solutions"],["wrap-up","Wrap up the call","Confirm the next step and log it"]]},
+ "wrap-up":{badge:"4",title:"Wrap-up & logging",crumb:["flow"],lead:"Every call ends with a clear next step, and gets logged right away.",
+  body:()=>`${S("Thank you so much for your time! Just to confirm, I'll [send the quote / email you the confirmation / call you back on Tuesday]. Have a wonderful day!")}
+    <div class="card" style="margin-top:14px"><h3>Log it in the tracker</h3><ul>
+      <li>Log <b>every</b> attempt, even no-answers, so the other person can see it.</li>
+      <li>Choose what happened, and set the next follow-up date.</li>
+      <li>Write notes the other person can act on: who answered, what they said, and the best time to call back.</li>
+      <li>Save any new names, phone numbers or emails on the account.</li>
+      <li>Send the matching email the same day.</li></ul></div>`,
+  next:[["rhythm","Follow-up rhythm","When to try again"],["templates","Email & text templates","Send the follow-up message"],["opening","Next call","Back to the opening"]]},
+ rhythm:{badge:"⟳",title:"Follow-up rhythm",crumb:[],lead:"Five touches over two weeks, then pause and try again next season.",
+  body:()=>`<div class="cad"><div><b>Day 1</b>Call. If there's no answer, leave a voicemail and send the matching email.</div><div><b>Day 3</b>Call again at a different time of day. Text if it's a cell phone.</div><div><b>Day 7</b>Third call. Ask the front desk for the GM if the contact never answers.</div><div><b>Day 14</b>Send the final friendly email and pause.</div><div><b>+60 days</b>Try once more, before the next season.</div></div>
+    ${DO('<b>Stop right away</b> if someone books, says they\'re not interested, or asks not to be contacted.')}`,
+  next:[["tpl-final","Day 14 final email","The last friendly message"],["templates","All templates","Emails and texts"]]}
+};
+
+const SIG=()=>`Warm regards,\n{you}\nOxi Fresh Carpet Cleaning of Northeast Florida\n{phone}`;
+const TPL={
+ checkin:{name:"Check-in email to the contact on file",when:"After talking with the contact, or as a first touch",kind:"Email",
+  subject:"Checking in from Oxi Fresh, {company}",
+  body:()=>`Hi {cfirst},\n\nI hope all is well at {company}! This is {you} with Oxi Fresh Carpet Cleaning of Northeast Florida. Our team last cleaned for you in {last}, and we wanted to check in.\n\nWe're reaching out to our commercial customers this season to help get their spaces fresh before the holidays. Our low-moisture process uses only about 5% of the water of traditional cleaning, so carpets are typically dry in about an hour (which also helps prevent mold and mildew), and we're happy to schedule before opening, after hours or on a weekend so there's no disruption.\n\nAside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors.\n\nWould you like an estimate? Our franchise owner, Sean Rotolo, would be happy to stop by, see your space and give you an exact quote. Just reply here or call/text us at {phone}.\n\nThank you again for trusting us with your space!\n\n${SIG()}`},
+ gm:{name:"Intro email to a new GM",when:"The old contact left and you have the GM's email",kind:"Email",
+  subject:"Introducing Oxi Fresh Carpet Cleaning to {company}",
+  body:()=>`Hi {gfirst},\n\nMy name is {you}, and I'm with Oxi Fresh Carpet Cleaning of Northeast Florida. Our team has cleaned for {company} in the past, most recently in {last}. Since you're now overseeing the location, I wanted to introduce ourselves.\n\nWe'd love to continue being part of your vendor list. Our franchise owner, Sean Rotolo, would be happy to meet you for a quick 15-minute walkthrough to see your space, learn what you need, and give you a free estimate. We can also send over a W-9, certificate of insurance, or anything your vendor setup requires.\n\nA few things our commercial clients appreciate:\n• Carpets are typically dry in about an hour\n• Only about 5% of the water of traditional cleaning, which helps prevent mold and mildew\n• Early morning, after-hours and weekend scheduling\n• Eco-friendly cleaning solutions\n• Beyond carpet: area rugs, upholstery, tile & grout, laminate and LVP floors\n\nWhat day and time works best for you this week or next? You can reply here or call/text us at {phone}.\n\n${SIG()}`},
+ confirm:{name:"Estimate appointment with Sean",when:"Right after you book an estimate or meeting with Sean",kind:"Email",
+  subject:"Your estimate appointment with Sean Rotolo – {company}",
+  body:()=>`Hi {who},\n\nThank you for setting up a time with us! This confirms your free on-site estimate at {company} on {meet}.\n\nSean Rotolo, the owner of Oxi Fresh Carpet Cleaning of Northeast Florida, will meet you personally. It usually takes about 15–20 minutes. He'll look at the areas you'd like cleaned, answer any questions, and follow up with your quote.\n\nAside from carpet, we also clean area rugs, upholstery, tile and grout, laminate floors and LVP floors. Feel free to show Sean anything else you'd like included in the estimate.\n\nIf you need to reschedule, just reply here or call/text {phone}.\n\nWe look forward to meeting you!\n\n${SIG()}`},
+ availability:{name:"Sean's availability (offer times)",when:"After you've checked with Sean, to offer the customer times to meet",kind:"Email",
+  subject:"Times to meet with Sean Rotolo – {company}",
+  body:()=>`Hi {who},\n\nThank you again for your time! As promised, I checked with Sean Rotolo, the owner of Oxi Fresh Carpet Cleaning of Northeast Florida. He would love to meet you at {company} to see the space and give you a free estimate. He's available:\n\n• [Day, date at time]\n• [Day, date at time]\n• [Day, date at time]\n\nWhich one works best for you? If none of these fit, just let me know a day and time that's better and I'll check with him.\n\nThe visit usually takes about 15–20 minutes. You can reply here or call/text us at {phone}.\n\n${SIG()}`},
+ reminder:{name:"Appointment reminder (day before)",when:"The day before Sean's visit",kind:"Text",subject:"",
+  body:()=>`Hi {who}, this is {you} from Oxi Fresh Carpet Cleaning! Just a friendly reminder that Sean Rotolo will see you at {company} on {meet} for your free estimate. Need to reschedule? Call/text {phone}. Reply STOP to opt out.`},
+ vendor:{name:"Vendor paperwork email",when:"The GM asked for a W-9, insurance certificate or vendor form",kind:"Email",
+  subject:"Vendor information for {company} – Oxi Fresh Carpet Cleaning",
+  body:()=>`Hi {gfirst},\n\nThank you again for considering Oxi Fresh Carpet Cleaning as a vendor for {company}! As promised, I've attached:\n\n• W-9\n• Certificate of insurance\n• [Any other form they asked for]\n\nIf your team needs anything else to complete the vendor setup, just let me know and I'll send it right over.\n\nWe're looking forward to taking care of your space.\n\n${SIG()}`},
+ vm:{name:"Email after a voicemail",when:"You left a voicemail and have an email address",kind:"Email",
+  subject:"Sorry I missed you – Oxi Fresh Carpet Cleaning",
+  body:()=>`Hi {cfirst},\n\nI just left you a quick voicemail. This is {you} from Oxi Fresh Carpet Cleaning of Northeast Florida. We've cleaned for {company} before (most recently in {last}), and I wanted to see if you'd like a quote for your next cleaning, or if there's a better person to talk to about vendors.\n\nWhenever it's convenient, just reply here or call/text us at {phone}.\n\n${SIG()}`},
+ text:{name:"Text message",when:"Day 3, or after a voicemail to a cell phone",kind:"Text",subject:"",
+  body:()=>`Hi {cfirst}, this is {you} from Oxi Fresh Carpet Cleaning of NE Florida! We've cleaned for {company} before and wanted to check in. Would you like a quick quote or a short walkthrough? Call/text {phone} anytime. Reply STOP to opt out.`},
+ final:{name:"Day 14 final email",when:"No reply after two weeks of follow-ups",kind:"Email",
+  subject:"Still here whenever you're ready",
+  body:()=>`Hi {cfirst},\n\nI just wanted to follow up one last time about a cleaning refresh for {company}. If now isn't the right time, no worries at all. We're always happy to help whenever you need us, whether it's carpet, area rugs, upholstery, tile & grout, laminate or LVP floors, and we're glad to set up a regular schedule so your space stays fresh all year.\n\nJust reply or call/text us at {phone} anytime.\n\n${SIG()}`},
+ thanks:{name:"Thank-you after Sean's visit",when:"Same day as the estimate, with the quote",kind:"Email",
+  subject:"Thank you for meeting with Sean, {who}!",
+  body:()=>`Hi {who},\n\nThank you so much for meeting with Sean at {company} today and showing him around!\n\nAs promised, your quote is attached. [Short summary: areas, price, timing.] We can schedule around your hours, including early mornings or weekends, whichever is easiest for your team.\n\nIf you have any questions, or you'd like to get on the calendar, just reply here or call/text {phone}.\n\n${SIG()}`}
+};
+// the meeting template greets the GM if known, otherwise the contact
+const greetGM=t=>F.gm?t:t.replace(/\{gfirst\}/g,"{cfirst}");
+
+/* ---------- routing & breadcrumbs ---------- */
+const NAMES={home:"Playbook",flow:"Call flow",templates:"Templates",rhythm:"Follow-up rhythm",services:"Everything we clean",why:"Why Oxi Fresh"};
+Object.keys(STEPS).forEach(k=>{if(!NAMES[k])NAMES[k]=(STEPS[k].badge&&/^[0-9]/.test(STEPS[k].badge)?STEPS[k].badge+" · ":"")+STEPS[k].title});
+Object.keys(TPL).forEach(k=>NAMES["tpl-"+k]=TPL[k].name);
+const FLOW=["prep","opening","contact-there","contact-left","gm","estimate","voicemail","objections","wrap-up"];
+function trail(r){
+  if(r==="home") return ["home"];
+  if(r==="flow") return ["home","flow"];
+  if(r==="templates") return ["home","templates"];
+  if(r.startsWith("tpl-")) return ["home","templates",r];
+  const s=STEPS[r]; if(!s) return ["home"];
+  return ["home",...s.crumb,r];
+}
+function renderCrumbs(r){
+  const t=trail(r);
+  $("#crumbs").innerHTML=t.map((k,i)=>i===t.length-1?`<li><span aria-current="page">${esc(NAMES[k])}</span></li>`:`<li><a href="#${k==="flow"?"prep":k}">${esc(NAMES[k])}</a></li>`).join("");
+}
+function render(){
+  let r=(location.hash||"").slice(1)||"home";
+  if(r==="flow") r="opening";
+  if(!(r==="home"||r==="templates"||STEPS[r]||(r.startsWith("tpl-")&&TPL[r.slice(4)]))) r="home";
+  renderCrumbs(r);
+  const m=$("#main");
+  if(r==="home") m.innerHTML=homeHTML();
+  else if(r==="templates") m.innerHTML=templatesHTML();
+  else if(r.startsWith("tpl-")) m.innerHTML=tplHTML(r.slice(4));
+  else m.innerHTML=stepHTML(r);
+  m.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>copy(b.dataset.copy,b));
+  m.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();const t=document.getElementById(a.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})});
+  current=r;
+}
+let current="home";
+window.addEventListener("hashchange",()=>{render();window.scrollTo(0,0)});
+
+function homeHTML(){
+  return `<div class="stephead"><div><h2>How we reach out to past commercial customers</h2><p>Call the businesses we've cleaned before. If our old contact has left, find the current general manager and ask for a short meeting so Oxi Fresh can stay on their vendor list.</p></div></div>
+  <div class="flow">${["prep","opening"].map(k=>`<a href="#${k}">${esc(NAMES[k])}</a>`).join("<i>›</i>")}<i>›</i><a href="#contact-there">2A Contact is there</a><i>or</i><a href="#contact-left">2B Contact has left</a><i>›</i><a href="#gm">3 GM</a><i>›</i><a href="#estimate">Estimate with Sean</a><i>›</i><a href="#wrap-up">4 Wrap-up</a></div>
+  <div class="home-grid">
+    <div class="card"><h3>Call flow</h3><ol>${FLOW.map(k=>`<li><a href="#${k}">${esc(STEPS[k].title)}</a></li>`).join("")}</ol><div class="btns"><a class="btn primary" href="#prep" style="text-decoration:none">Start here</a></div></div>
+    <div class="card"><h3>Email &amp; text templates</h3><ul>${Object.keys(TPL).map(k=>`<li><a href="#tpl-${k}">${esc(TPL[k].name)}</a></li>`).join("")}</ul></div>
+    <div class="card"><h3>Why Oxi Fresh</h3><p style="margin:0 0 8px" class="muted">Our low-moisture method, why it matters for businesses, how it compares with steam cleaning, and what to say about our solutions.</p><a href="#why">Read it before your first call</a></div>
+    <div class="card"><h3>Everything we clean</h3><p style="margin:0 0 8px" class="muted">Carpet, area rugs, upholstery, tile &amp; grout, laminate and LVP floors. Mention them on every call.</p><a href="#services">See the services list</a></div>
+    <div class="card"><h3>Estimates with Sean</h3><p style="margin:0 0 8px" class="muted">When a customer wants a price or a meeting, book a free on-site estimate with our franchise owner, Sean Rotolo.</p><a href="#estimate">How to book it</a></div>
+    <div class="card"><h3>Follow-up rhythm</h3><p style="margin:0 0 8px" class="muted">Day 1 call · Day 3 call or text · Day 7 call · Day 14 final email · +60 days try again.</p><a href="#rhythm">See the full rhythm</a></div>
+  </div>
+  ${TIP("Fill in the bar at the top (company, contact, GM, last cleaned) before a call and every script and template on this page uses those names. Click “Clear for next call” when you're done.")}`;
+}
+function stepHTML(k){
+  const s=STEPS[k], i=FLOW.indexOf(k);
+  const prev=i>0?FLOW[i-1]:null, nxt=i>=0&&i<FLOW.length-1?FLOW[i+1]:null;
+  return `<div class="stephead"><span class="badge">${esc(s.badge)}</span><div><h2>${esc(s.title)}</h2><p>${esc(s.lead)}</p></div></div>
+  ${s.body()}
+  ${s.next&&s.next.length?`<div class="next"><h3>What happened? Go to</h3><div class="choices">${s.next.map(n=>go(n[0],n[1],n[2])).join("")}</div></div>`:""}
+  ${i>=0?`<div class="pager"><span>${prev?`<a href="#${prev}">← ${esc(STEPS[prev].title)}</a>`:""}</span><span>${nxt?`<a href="#${nxt}">${esc(STEPS[nxt].title)} →</a>`:""}</span></div>`:""}`;
+}
+function templatesHTML(){
+  return `<div class="stephead"><span class="badge">✉</span><div><h2>Email &amp; text templates</h2><p>Pick the message for what just happened. Each one fills in with the details from the bar at the top.</p></div></div>
+  <div class="tpl-list">${Object.keys(TPL).map(k=>go("tpl-"+k,TPL[k].name,TPL[k].when)).join("")}</div>`;
+}
+function tplParts(k){const t=TPL[k];let subj=t.subject,body=t.body();if(k==="vendor"){subj=greetGM(subj);body=greetGM(body)}if(k==="vm"&&F.gm&&!F.contact){body=body.replace(/\{cfirst\}/g,"{gfirst}")}return {subj,body}}
+function tplHTML(k){
+  const t=TPL[k], p=tplParts(k), keys=Object.keys(TPL), i=keys.indexOf(k);
+  return `<div class="stephead"><span class="badge">${t.kind==="Text"?"SMS":"✉"}</span><div><h2>${esc(t.name)}</h2><p>${esc(t.when)}</p></div></div>
+  <div class="msg">${p.subj?`<span class="subj">Subject: ${fillHTML(p.subj)}</span>`:""}${fillHTML(p.body)}</div>
+  <div class="btns">${p.subj?`<button type="button" class="btn" data-copy="subj">Copy subject</button>`:""}<button type="button" class="btn primary" data-copy="body">Copy ${t.kind==="Text"?"text":"message"}</button></div>
+  ${/\[[A-Z]/.test(fillText(p.subj+p.body))?`<p class="do">Anything still in <span class="ph">[brackets]</span> needs to be filled in before sending.</p>`:""}
+  <div class="pager"><span>${i>0?`<a href="#tpl-${keys[i-1]}">← ${esc(TPL[keys[i-1]].name)}</a>`:""}</span><span>${i<keys.length-1?`<a href="#tpl-${keys[i+1]}">${esc(TPL[keys[i+1]].name)} →</a>`:""}</span></div>`;
+}
+
+/* ---------- copy ---------- */
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2000)}
+function copy(what,btn){
+  const k=current.slice(4), p=tplParts(k), txt=fillText(what==="subj"?p.subj:p.body);
+  const ok=()=>{const o=btn.textContent;btn.textContent="Copied";setTimeout(()=>btn.textContent=o,1400)};
+  const fallback=()=>{const el=document.querySelector(".msg");if(!el)return;const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected. Press Ctrl+C (⌘C on Mac) to copy.")};
+  try{navigator.clipboard.writeText(txt).then(ok,fallback)}catch(e){fallback()}
+}
+
+/* ---------- fill-in bar ---------- */
+function save(){try{localStorage.setItem("cop-fill",JSON.stringify(F))}catch(e){}}
+["company","contact","gm","last","meet"].forEach(k=>{const el=$("#f-"+k);el.value=F[k];el.addEventListener("input",()=>{F[k]=el.value.trim();save();clearTimeout(render.t);render.t=setTimeout(render,150)})});
+function syncYou(){document.querySelectorAll("#youSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.you===F.you))}
+document.querySelectorAll("#youSeg button").forEach(b=>b.onclick=()=>{F.you=b.dataset.you;save();syncYou();render()});
+$("#clearBtn").onclick=()=>{["company","contact","gm","last","meet"].forEach(k=>{F[k]="";$("#f-"+k).value=""});save();render();toast("Cleared")};
+syncYou();
+render();
+})();
+</script>
